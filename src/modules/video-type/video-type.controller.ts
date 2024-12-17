@@ -9,11 +9,13 @@ import {
   Query,
   Headers,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { VideoTypeService } from './video-type.service';
 import { CreateVideoTypeDto } from './dto/create-video-type.dto';
-import { UpdateVideoTypeDto } from './dto/update-video-type.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @ApiTags(`Video`)
 @Controller('video')
@@ -37,6 +39,7 @@ export class VideoTypeController {
   }
 
   @Post(`create-video-type`)
+  @ApiBody({ type: VideoTypeController })
   async createVideoType(@Body(`body`) body: CreateVideoTypeDto) {
     return await this.videoTypeService.createVideoType(body);
   }

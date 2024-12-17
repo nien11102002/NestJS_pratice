@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVideoTypeDto } from './dto/create-video-type.dto';
 import { UpdateVideoTypeDto } from './dto/update-video-type.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/common/prisma/prisma.service';
 
 @Injectable()
 export class VideoTypeService {

@@ -16,9 +16,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import localStorage from 'src/common/multer/upload-local.multer';
+import cloudStorage from 'src/common/multer/upload-cloud-multer';
+import { FileUploadDto } from './dto/file-upload.dto';
 
 @Controller('user')
+@ApiTags(`Users`)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -52,25 +56,23 @@ export class UserController {
   }
 
   @Post(`avatar-local`)
-  @UseInterceptors(FileInterceptor('avatar'))
+  @UseInterceptors(FileInterceptor('avatar', { storage: localStorage }))
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        avatar: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
+    description: '',
+    type: FileUploadDto,
   })
   uploadAvatarLocal(@UploadedFile() file: Express.Multer.File) {
     return this.userService.uploadAvatar(file);
   }
 
   @Post(`avatar-cloud`)
-  @UseInterceptors(FileInterceptor('avatar'))
+  @UseInterceptors(FileInterceptor('avatar', { storage: cloudStorage }))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: '',
+    type: FileUploadDto,
+  })
   uploadAvatarCloud(@UploadedFile() file: Express.Multer.File) {
     return this.userService.uploadAvatar(file);
   }

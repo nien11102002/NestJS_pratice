@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request } from 'express';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/common/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
@@ -50,8 +50,21 @@ export class UserService {
     return `This action removes a #${id} user`;
   }
 
-  uploadAvatar(file: Express.Multer.File) {
-    console.log({ file });
-    return `AvatarLocal`;
+  async uploadAvatar(file: Express.Multer.File) {
+    //if (!file) throw new BadRequestError(`File not exists`);
+    // const isImgLocal = req.user.avatar?.includes(`local`);
+    // await this.prisma.users.update({
+    //   where: {
+    //     user_id: +req.user.user_id,
+    //   },
+    //   data: {
+    //     avatar: file.filename,
+    //   },
+    // });
+    // return {
+    //   folder: `images/`,
+    //   filename: file.filename,
+    //   imgUrl: isImgLocal ? `images${file.path}` : file.path,
+    // };
   }
 }
